@@ -1,14 +1,61 @@
 from tkinter import *
+import math
+
 
 def click(value):
-    if value=='C':
-        ex=entryField.get()
-        ex=ex[0:len(ex)-1]
+    ex=entryField.get()     # 789 ex[0:len(ex)-1]
+    answer=''
+
+    if value == 'C':
+
+        ex=ex[0:len(ex)-1]      # 78
         entryField.delete(0, END)
         entryField.insert(0, ex)
 
-    if value=='CE':
+    elif value == 'CE':
         entryField.delete(0, END)
+
+    elif value == '√':
+        answer = math.sqrt(eval(ex))
+
+    elif value == 'π':
+        answer = math.pi
+
+    elif value == 'cosθ':
+        answer = math.cos(math.radians(eval(ex)))
+
+    elif value == 'tanθ':
+        answer = math.tan(math.radians(eval(ex)))
+
+    elif value == 'sinθ':
+        answer = math.sin(math.radians(eval(ex)))
+
+    elif value == 'cosh':
+        answer = math.cosh(eval(ex))
+
+    elif value == 'tanh':
+        answer = math.tanh(eval(ex))
+
+    elif value=='sinh':
+        answer=math.sinh(eval(ex))
+
+    elif value == '2π':
+        answer = 2*math.pi
+
+    elif value == chr(8731):
+        answer = eval(ex)**(1/3)
+
+    elif value == 'x\u02b8': #7**2
+        entryField.insert(END, '**')
+
+    elif value == 'x\u00B3':
+        answer = eval(ex) ** 3
+
+    elif value == 'x\u00B2':
+        answer = eval(ex) ** 2
+
+    entryField.delete(0, END)
+    entryField.insert(0, answer)
 
 
 root = Tk()
