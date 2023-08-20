@@ -1,62 +1,118 @@
 from tkinter import *
 import math
+from pygame import mixer
+import speech_recognition
+
+
+mixer.init()
 
 
 def click(value):
     ex=entryField.get()     # 789 ex[0:len(ex)-1]
     answer=''
 
-    if value == 'C':
+    try:
 
-        ex=ex[0:len(ex)-1]      # 78
+        if value == 'C':
+
+            ex=ex[0:len(ex)-1]      # 78
+            entryField.delete(0, END)
+            entryField.insert(0, ex)
+            return
+
+        elif value == 'CE':
+            entryField.delete(0, END)
+
+        elif value == '√':
+            answer = math.sqrt(eval(ex))
+
+        elif value == 'π':
+            answer = math.pi
+
+        elif value == 'cosθ':
+            answer = math.cos(math.radians(eval(ex)))
+
+        elif value == 'tanθ':
+            answer = math.tan(math.radians(eval(ex)))
+
+        elif value == 'sinθ':
+            answer = math.sin(math.radians(eval(ex)))
+
+        elif value == 'cosh':
+            answer = math.cosh(eval(ex))
+
+        elif value == 'tanh':
+            answer = math.tanh(eval(ex))
+
+        elif value=='sinh':
+            answer=math.sinh(eval(ex))
+
+        elif value == '2π':
+            answer = 2*math.pi
+
+        elif value == chr(8731):
+            answer = eval(ex)**(1/3)
+
+        elif value == 'x\u02b8': #7**2
+            entryField.insert(END, '**')
+            return
+
+        elif value == 'x\u00B3':
+            answer = eval(ex) ** 3
+
+        elif value == 'x\u00B2':
+            answer = eval(ex) ** 2
+
+        elif value == 'ln':
+            answer = math.log2(eval(ex))
+
+        elif value == 'deg':
+            answer = math.degrees(eval(ex))
+
+        elif value=='rad':
+            answer=math.radians(eval(ex))
+
+        elif value == 'e':
+            answer = math.e
+
+        elif value == 'log':
+            answer = math.log10(eval(ex))
+
+        elif value=='x!':
+            answer=math.factorial(ex)
+
+        elif value == chr(247): #7/2=3.5
+            entryField.insert(END, '/')
+            return
+
+        elif value == '=':
+            answer = eval(ex)
+
+        else:
+            entryField.insert(END, value)
+            return
+
         entryField.delete(0, END)
-        entryField.insert(0, ex)
+        entryField.insert(0, answer)
 
-    elif value == 'CE':
-        entryField.delete(0, END)
+    except SyntaxError:
+        pass
 
-    elif value == '√':
-        answer = math.sqrt(eval(ex))
+def audio():
+    mixer.music.load('mixkit-airplane.wav')
+    mixer.music.play()
+    sr = speech_recognition.Recognizer()
+    with speech_recognition.Microphone() as m:
+        try:
+            sr.adjust_for_ambient_noise(m, duration=0.2)
+            voice = sr.listen(m)
+            text = sr.recognize_google(voice)
+            print(text)
+            mixer.music.load('music2.mp3')
+            mixer.music.play()
 
-    elif value == 'π':
-        answer = math.pi
-
-    elif value == 'cosθ':
-        answer = math.cos(math.radians(eval(ex)))
-
-    elif value == 'tanθ':
-        answer = math.tan(math.radians(eval(ex)))
-
-    elif value == 'sinθ':
-        answer = math.sin(math.radians(eval(ex)))
-
-    elif value == 'cosh':
-        answer = math.cosh(eval(ex))
-
-    elif value == 'tanh':
-        answer = math.tanh(eval(ex))
-
-    elif value=='sinh':
-        answer=math.sinh(eval(ex))
-
-    elif value == '2π':
-        answer = 2*math.pi
-
-    elif value == chr(8731):
-        answer = eval(ex)**(1/3)
-
-    elif value == 'x\u02b8': #7**2
-        entryField.insert(END, '**')
-
-    elif value == 'x\u00B3':
-        answer = eval(ex) ** 3
-
-    elif value == 'x\u00B2':
-        answer = eval(ex) ** 2
-
-    entryField.delete(0, END)
-    entryField.insert(0, answer)
-
+        except:
+            pass
 
 root = Tk()
 root.title('Smart Calculator')
@@ -71,7 +127,7 @@ entryField = Entry(root, font=('Verdana', 20, 'bold'), bg='purple', fg='white', 
 entryField.grid(row=0, column=0, columnspan=8)
 
 micImage = PhotoImage(file='microphone.png')
-micButton = Button(root, image=micImage, bd=0, bg='purple', activebackground='purple')
+micButton = Button(root, image=micImage, bd=0, bg='purple', activebackground='purple', command=audio)
 micButton.grid(row=0, column=7)
 
 button_text_list = ["C", "CE", "√", "+", "π", "cosθ", "tanθ", "sinθ",
