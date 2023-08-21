@@ -98,6 +98,44 @@ def click(value):
     except SyntaxError:
         pass
 
+def add(a, b):
+    return a+b
+def sub(a, b):
+    return a-b
+
+def mul(a, b):
+    return a*b
+def div(a, b):
+    return a / b
+
+def mod(a, b):
+    return a % b
+
+def lcm(a, b):
+    l=math.lcm(a, b)
+    return l
+
+def hcf(a, b):
+    h=math.gcd(a, b)
+    return h
+
+operations = {'ADD':add, 'ADDITION':add, 'SUM':add, 'PLUS':add,
+              'SUBTRACTION':sub, 'DIFFERENCE':sub, 'MINUS':sub, 'SUBTRACT': sub,
+              'PRODUCT':mul, 'MULTIPLICATION':mul, 'MULTIPLY':mul,
+              'DIVISON':div, 'DIV':div, 'DIVIDE':div,
+              'LCM':lcm, 'HCF':hcf,
+              'MOD':mod, 'REMAINDER':mod, 'MODULUS':mod}
+
+def findNumbers(t):
+    l = []
+    for num in t:
+        try:
+            l.append(float(num))
+        except ValueError:
+            pass
+    return l
+            
+
 def audio():
     mixer.music.load('mixkit-airplane.wav')
     mixer.music.play()
@@ -107,9 +145,14 @@ def audio():
             sr.adjust_for_ambient_noise(m, duration=0.2)
             voice = sr.listen(m)
             text = sr.recognize_google(voice)
-            print(text)
+
             mixer.music.load('music2.mp3')
             mixer.music.play()
+            text_list = text.split(' ')
+            for word in text_list:
+                if word.upper() in operations.keys():
+                    l = findNumbers(text_list)
+                    operations[word.upper()]
 
         except:
             pass
