@@ -104,7 +104,7 @@ def sub(a, b):
     return a-b
 
 def mul(a, b):
-    return a*b
+    return a * b
 def div(a, b):
     return a / b
 
@@ -130,7 +130,7 @@ def findNumbers(t):
     l = []
     for num in t:
         try:
-            l.append(float(num))
+            l.append(int(num))
         except ValueError:
             pass
     return l
@@ -152,7 +152,13 @@ def audio():
             for word in text_list:
                 if word.upper() in operations.keys():
                     l = findNumbers(text_list)
-                    operations[word.upper()]
+                    print(l)
+                    result = operations[word.upper()](l[0], l[1])
+                    entryField.delete(0, END)
+                    entryField.insert(END, result)
+
+                else:
+                    pass
 
         except:
             pass
